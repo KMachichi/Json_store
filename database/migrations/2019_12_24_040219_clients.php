@@ -25,7 +25,7 @@ class Clients extends Migration
             $table->boolean('checked');
             $table->text('description');
             $table->string('interest')->nullable();
-            $table->date('date_of_birth');
+            $table->date('date_of_birth')->nullable();
             $table->timestamps();
         });
     }
