@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Response;
 
 class JsonController extends Controller
 {
@@ -19,16 +20,14 @@ class JsonController extends Controller
     	$extension = $request->extension;
 
     	if (!in_array($extension, ['json',/*'csv','xml'*/] )) {
-    		echo 'Invalid extension !';
-    		exit();
+    		return $this->getResponse('Invalid extension !');
     	}
 
         // If we want to store other extensions files as xml or csv 
         $jsonFiles  = glob(storage_path('app/public/*.'.$extension));
 
         if (!count($jsonFiles)) {
-            echo 'No files to store';
-            exit();
+            return $this->getResponse('No files to store');
         }
 
         // case json files more than one
@@ -59,8 +58,7 @@ class JsonController extends Controller
             }
 
             if (!$fileId) {
-                echo 'Somthing goes wrong Check you\'r error log';
-                exit();
+                return $this->getResponse('Somthing goes wrong Check you\'r error log');
             }
 
             foreach($data as $key => $value) {
@@ -81,8 +79,7 @@ class JsonController extends Controller
                     }
 
                     if (!$clientId) {
-                        echo 'Somthing goes wrong Check you\'r error log';
-                        exit();                    
+                        return $this->getResponse('Somthing goes wrong Check you\'r error log');                    
                     }
 
                     $creditCard['client_id'] = $clientId;
@@ -97,17 +94,24 @@ class JsonController extends Controller
                     }
 
                     if (!$clientId) {
-                        echo 'Somthing goes wrong Check you\'r error log';
-                        exit();                    
+                        return $this->getResponse('Somthing goes wrong Check you\'r error log');                  
                     }    
                 }
             }
 
             DB::table('imported_files')->where('id',$fileId)->update(['imported' => true,'end_time' => date("H:i:s")]);
 
-            echo 'End store data';
+            return $this->getResponse('End store data');
             die;
         }
     }
+
+    /**
+     * Return response error
+     */
     
+    public function getResponse($error)
+    {
+        return response()->json(['error' => $error]);
+    }
 }
