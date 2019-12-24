@@ -18,12 +18,9 @@ class CreditCards extends Migration
             $table->integer('client_id')->unsigned();
             $table->foreign('client_id')->references('id')->on('clients');
             $table->string('name');
-            $table->integer('parts_number');
-            $table->boolean('imported');
-            $table->string('interest');
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->string('extension');
+            $table->string('type');
+            $table->string('number');
+            $table->date('expiration_date');
             $table->timestamps();
         });
     }
