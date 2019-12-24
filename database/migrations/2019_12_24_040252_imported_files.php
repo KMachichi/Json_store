@@ -18,9 +18,8 @@ class ImportedFiles extends Migration
             $table->string('name');
             $table->integer('parts_number');
             $table->boolean('imported');
-            $table->string('interest');
             $table->time('start_time');
-            $table->time('end_time');
+            $table->time('end_time')->nullable();
             $table->string('extension');
             $table->timestamps();
         });
